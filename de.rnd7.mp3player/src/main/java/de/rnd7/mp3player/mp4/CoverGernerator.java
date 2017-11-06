@@ -3,6 +3,7 @@ package de.rnd7.mp3player.mp4;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.ConvolveOp;
 import java.awt.image.Kernel;
@@ -46,6 +47,15 @@ public class CoverGernerator {
 
 		return result;
 	}
+	
+	Rectangle2D findBounds(final BufferedImage input) {
+		final int yStart = this.findYStart(input);
+		final int yEnd = this.findYEnd(input);
+		final int xStart = this.findXStart(input);
+		final int xEnd = this.findXEnd(input);
+
+		return new Rectangle2D.Double(xStart, yStart, xEnd - xStart, yEnd - yStart);
+	}
 
 	private int findYStart(final BufferedImage image) {
 		final int end = image.getHeight() / 2;
@@ -61,7 +71,7 @@ public class CoverGernerator {
 		final int end = image.getHeight() / 2;
 		for (int y = image.getHeight() - 1; y > end; y--) {
 			if (this.isColoredYLine(image, y)) {
-				return y;
+				return y + 1;
 			}
 		}
 		return image.getHeight();
@@ -81,7 +91,7 @@ public class CoverGernerator {
 		final int end = image.getWidth() / 2;
 		for (int x = image.getWidth() - 1; x > end; x--) {
 			if (this.isColoredXLine(image, x)) {
-				return x;
+				return x + 1;
 			}
 		}
 		return image.getWidth();
