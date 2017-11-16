@@ -5,6 +5,7 @@ language: java
 jdk:
   - oraclejdk8
 
+before_install: cd de.rnd7.mp3player
 install: mvn install 
 
 cache:
