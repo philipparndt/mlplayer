@@ -12,7 +12,7 @@ jdk:
   - oraclejdk8
 
 before_install: cd de.rnd7.mp3player
-install: mvn clean install org.jacoco:jacoco-maven-plugin:prepare-agent package sonar:sonar 
+install: mvn clean install org.jacoco:jacoco-maven-plugin:prepare-agent package sonar:sonar -Dsonar.host.url=https://sonarcloud.io
 
 cache:
   directories:
