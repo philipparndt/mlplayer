@@ -198,14 +198,16 @@ public class Controller {
 
 		final boolean playing = this.player.isPlaying();
 		this.viewer.setPaying(playing);
-		this.viewer.setCurrent(this.library.getCurrentItem().flatMap(LibraryItem::getCover));
+		
+		final Optional<LibraryItem> currentItem = this.library.getCurrentItem();
+		this.viewer.setCurrent(currentItem.flatMap(LibraryItem::getCover));
 
 		if (playing) {
 			this.viewer.setPaused(this.player.isPaused());
 			this.viewer.setPosition(this.player.getPosition(), this.player.getLength());
 		}
-		else if (this.library.getCurrentItem().isPresent()) {
-			final LibraryItem item = this.library.getCurrentItem().get();
+		else if (currentItem.isPresent()) {
+			final LibraryItem item = currentItem.get();
 			this.viewer.setPosition(item.getCurrentPosition(), item.getLength());
 		}
 		else {
