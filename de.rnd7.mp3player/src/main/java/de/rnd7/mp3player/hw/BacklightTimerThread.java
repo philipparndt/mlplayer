@@ -26,6 +26,8 @@ public class BacklightTimerThread extends Thread {
 		}
 		catch (final InterruptedException e) {
 			e.printStackTrace();
+			
+			Thread.currentThread().interrupt();
 		}
 	}
 
