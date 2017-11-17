@@ -25,6 +25,7 @@ import org.slf4j.LoggerFactory;
 import com.google.common.util.concurrent.SimpleTimeLimiter;
 import com.google.common.util.concurrent.TimeLimiter;
 
+@SuppressWarnings("squid:S3457")
 class MPlayerThread extends Thread {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(MPlayerThread.class);
@@ -145,8 +146,7 @@ class MPlayerThread extends Thread {
 		this.lock.lock();
 		try {
 			this.sendPropertyRequestInternal(propertyName);
-			final PropertyResultCriteria C = new PropertyResultCriteria(propertyName);
-			return this.readLinesUntil(C);
+			return this.readLinesUntil(new PropertyResultCriteria(propertyName));
 		}
 		finally {
 			this.lock.unlock();
@@ -167,14 +167,6 @@ class MPlayerThread extends Thread {
 		LOGGER.trace("sending stop");
 		this.output.print("stop\n");
 		this.output.flush();
-	}
-
-	public void decreaseVolume() {
-
-	}
-
-	public void increaseVolume() {
-
 	}
 
 	public int getLength() {

@@ -4,6 +4,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Properties;
 
 import org.slf4j.Logger;
@@ -19,17 +22,20 @@ import de.rnd7.mp3player.splash.ProgressMonitorDialog;
  * @author philipparndt
  *
  */
-public class Main {
+public final class Main {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(Main.class);
 
-	public Main(final String args[]) {
-		try {
-			final Properties properties = this.loadProperties(args);
+	private Main() {
+	}
 	
-			final FolderLibrary library = this.initLibrary(properties);
-			final VolumeControl volumeControl = this.initVolume(properties);
-			final MPlayer player = this.initMPlayer(properties);
+	public static void main(final String args[]) throws Exception {
+		try {
+			final Properties properties = loadProperties(Arrays.asList(args));
+	
+			final FolderLibrary library = initLibrary(properties);
+			final VolumeControl volumeControl = initVolume(properties);
+			final MPlayer player = initMPlayer(properties);
 	
 			new Controller(new Viewer(), library, player, volumeControl);
 			
@@ -39,14 +45,13 @@ public class Main {
 			LOGGER.error(e.getMessage(), e);
 		}
 	}
-
-	private MPlayer initMPlayer(final Properties properties) {
+	
+	private static MPlayer initMPlayer(final Properties properties) {
 		final String propertyMplayer = properties.getProperty("mplayer");
-		final MPlayer player = new MPlayer(propertyMplayer);
-		return player;
+		return new MPlayer(propertyMplayer);
 	}
 
-	private FolderLibrary initLibrary(final Properties properties) throws IOException {
+	private static FolderLibrary initLibrary(final Properties properties) throws IOException {
 		final ProgressMonitorDialog splash = new ProgressMonitorDialog();
 		final String propertyLibrary = properties.getProperty("library");
 		final FolderLibrary library = new FolderLibrary(new File(propertyLibrary));
@@ -55,11 +60,11 @@ public class Main {
 		return library;
 	}
 
-	private VolumeControl initVolume(final Properties properties) {
+	private static VolumeControl initVolume(final Properties properties) {
 		final String propertyMixer = properties.getProperty("mixer");
-		final int mixerMin = this.toInt(properties.getProperty("mixer.min"), 1);
-		final int mixerDefault = this.toInt(properties.getProperty("mixer.min"), 10);
-		final int mixerMax = this.toInt(properties.getProperty("mixer.max"), 100);
+		final int mixerMin = toInt(properties.getProperty("mixer.min"), 1);
+		final int mixerDefault = toInt(properties.getProperty("mixer.min"), 10);
+		final int mixerMax = toInt(properties.getProperty("mixer.max"), 100);
 		final VolumeControl volumeControl = new VolumeControl(propertyMixer, mixerMin, mixerMax);
 		if (mixerDefault >= 0) {
 			volumeControl.set(mixerDefault);
@@ -67,7 +72,7 @@ public class Main {
 		return volumeControl;
 	}
 
-	private int toInt(final String s, final int defaultValue) {
+	private static int toInt(final String s, final int defaultValue) {
 		if (s == null) {
 			return defaultValue;
 		}
@@ -80,11 +85,11 @@ public class Main {
 		}
 	}
 
-	private Properties loadProperties(final String args[]) throws IOException {
+	private static Properties loadProperties(List<String> args) throws IOException {
 		final Properties result = new Properties();
 
-		if (args.length == 1) {
-			try (InputStream input = new FileInputStream(new File(args[0]))) {
+		if (args.size() == 1) {
+			try (InputStream input = new FileInputStream(new File(args.get(0)))) {
 				result.load(input);
 			}
 		}
@@ -97,7 +102,4 @@ public class Main {
 		return result;
 	}
 
-	public static void main(final String args[]) throws Exception {
-		new Main(args);
-	}
 }

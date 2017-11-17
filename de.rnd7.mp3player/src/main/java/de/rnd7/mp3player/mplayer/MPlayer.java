@@ -37,13 +37,13 @@ public class MPlayer {
 			old.destroyPlayer();
 		});
 
-		final MPlayerThread thread = new MPlayerThread(this.command);
-		thread.start();
+		final MPlayerThread playerThread = new MPlayerThread(this.command);
+		playerThread.start();
 
 		final TimeLimiter timeLimiter = SimpleTimeLimiter.create(this.executor);
 		try {
-			timeLimiter.callWithTimeout(() -> this.waitForPlayer(thread), 5, TimeUnit.SECONDS);
-			this.thread = Optional.of(thread);
+			timeLimiter.callWithTimeout(() -> this.waitForPlayer(playerThread), 5, TimeUnit.SECONDS);
+			this.thread = Optional.of(playerThread);
 		} catch (final InterruptedException e) {
 			LOGGER.info(e.getMessage(), e);
 			Thread.currentThread().interrupt();
@@ -86,7 +86,7 @@ public class MPlayer {
 	}
 
 	private void initPlay(final File file) {
-		LOGGER.trace("PLAY: " + file);
+		LOGGER.trace("PLAY: {}", file);
 
 		this.playingFile = file;
 		this.restart();
@@ -97,7 +97,7 @@ public class MPlayer {
 
 		this.initPlay(file);
 
-		this.thread.ifPresent(thread -> thread.loadAndStart(file));
+		this.thread.ifPresent(t -> t.loadAndStart(file));
 		this.loading = false;
 	}
 
@@ -108,9 +108,9 @@ public class MPlayer {
 	public void play(final File file, final Duration position) {
 		this.initPlay(file);
 
-		this.thread.ifPresent(thread -> {
-			thread.loadAndStart(file);
-			thread.seek(position);
+		this.thread.ifPresent(t -> {
+			t.loadAndStart(file);
+			t.seek(position);
 		});
 	}
 
@@ -118,32 +118,32 @@ public class MPlayer {
 		return this.thread.map(MPlayerThread::isPaused).orElse(false);
 	}
 
-	public void decreaseVolume() {
-		this.thread.ifPresent(MPlayerThread::decreaseVolume);
-	}
-
-	public void increaseVolume() {
-		this.thread.ifPresent(MPlayerThread::increaseVolume);
-	}
-
+	/**
+	 * 
+	 * @return the position of the current file in seconds
+	 */
 	public int getPosition() {
 		return this.thread.map(MPlayerThread::getPosition).orElse(-1);
 	}
 
+	/**
+	 * 
+	 * @return the length of the current file in seconds
+	 */
 	public int getLength() {
 		return this.thread.map(MPlayerThread::getLength).orElse(-1);
 	}
 
 	public void forward(final Duration duration) {
-		this.thread.ifPresent(thread -> thread.forward(duration));
+		this.thread.ifPresent(t -> t.forward(duration));
 	}
 
 	public void backward(final Duration duration) {
-		this.thread.ifPresent(thread -> thread.backward(duration));
+		this.thread.ifPresent(t -> t.backward(duration));
 	}
 
 	public void seek(final Duration position) {
-		this.thread.ifPresent(thread -> thread.seek(position));
+		this.thread.ifPresent(t -> t.seek(position));
 	}
 
 }

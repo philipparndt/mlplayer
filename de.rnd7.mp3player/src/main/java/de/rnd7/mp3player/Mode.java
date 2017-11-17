@@ -6,8 +6,6 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.util.Optional;
 
-import de.rnd7.mp3player.hw.Display;
-
 public class Mode {
 
 	private Optional<Runnable> commandL = Optional.empty();

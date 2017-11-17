@@ -28,10 +28,10 @@ public class CoverGernerator {
 		final int findXStart = this.findXStart(bufferedImage);
 		final int findXEnd = this.findXEnd(bufferedImage);
 
-		final int width = findXEnd - findXStart;
-		final int height = findYEnd - findYStart;
+		final int rectWidth = findXEnd - findXStart;
+		final int rectHeight = findYEnd - findYStart;
 
-		final BufferedImage toBeBlurred = bufferedImage.getSubimage(findXStart, findYStart, width, height);
+		final BufferedImage toBeBlurred = bufferedImage.getSubimage(findXStart, findYStart, rectWidth, rectHeight);
 
 		final Image background = toBeBlurred.getScaledInstance(this.width, this.height, Image.SCALE_FAST);
 
@@ -129,7 +129,6 @@ public class CoverGernerator {
 		final float[] hsbvals = new float[3];
 		Color.RGBtoHSB(red, green, blue, hsbvals );
 
-		//		float h = hsbvals[0];
 		final float s = hsbvals[1];
 		final float b = hsbvals[2];
 

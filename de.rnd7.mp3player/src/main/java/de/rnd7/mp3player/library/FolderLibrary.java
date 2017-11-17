@@ -67,7 +67,7 @@ public class FolderLibrary {
 			}
 		}
 		else {
-			LOGGER.info("Updating cover for " + file);
+			LOGGER.info("Updating cover for {}", file);
 
 			final CoverGernerator gernerator = new CoverGernerator($().display.getWidth(), $().display.getHeight());
 
