@@ -5,8 +5,13 @@ import static de.rnd7.mp3player.hw.HW.$;
 import java.time.Duration;
 import java.time.LocalDateTime;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class BacklightTimerThread extends Thread {
 
+	private static final Logger LOGGER = LoggerFactory.getLogger(BacklightTimerThread.class);
+	
 	private static final Duration DURATION = Duration.ofSeconds(60);
 
 	private LocalDateTime onUntil;
@@ -25,7 +30,7 @@ public class BacklightTimerThread extends Thread {
 			}
 		}
 		catch (final InterruptedException e) {
-			e.printStackTrace();
+			LOGGER.debug(e.getMessage(), e);
 			
 			Thread.currentThread().interrupt();
 		}

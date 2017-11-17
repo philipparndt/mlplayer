@@ -19,11 +19,16 @@ import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.Predicate;
 
 import org.apache.commons.io.IOUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.google.common.util.concurrent.SimpleTimeLimiter;
 import com.google.common.util.concurrent.TimeLimiter;
 
 class MPlayerThread extends Thread {
+	
+	private static final Logger LOGGER = LoggerFactory.getLogger(MPlayerThread.class);
+
 	private static final ExecutorService SERVICE = Executors.newFixedThreadPool(1) ;
 
 	private InputStreamReader input;
@@ -42,7 +47,8 @@ class MPlayerThread extends Thread {
 	@Override
 	public void run() {
 		try {
-			System.out.println(this.command);
+			LOGGER.trace("Executing command: {}", this.command);
+
 			final ProcessBuilder pb = new ProcessBuilder("bash", "-c", this.command);
 			this.process = pb.start();
 
@@ -53,10 +59,10 @@ class MPlayerThread extends Thread {
 
 			this.process.waitFor();
 
-			System.out.println("MPlayer instance stopped.");
+			LOGGER.trace("MPlayer instance stopped.");
 
 		} catch (final Exception e) {
-			e.printStackTrace();
+			LOGGER.error(e.getMessage(), e);
 		}
 	}
 
@@ -73,7 +79,7 @@ class MPlayerThread extends Thread {
 	}
 
 	private void sendRequest(final String request) {
-		//		System.out.println("request: " + request);
+		LOGGER.trace("request: {}", request);
 		this.output.print(request);
 		this.output.flush();
 	}
@@ -87,7 +93,7 @@ class MPlayerThread extends Thread {
 		try {
 			return timeLimiter.callWithTimeout(function, 2, TimeUnit.SECONDS);
 		} catch (TimeoutException | InterruptedException | ExecutionException e) {
-			System.err.println("Error: " +  e.getMessage());
+			LOGGER.error(e.getMessage(), e);
 			return Collections.emptyList();
 		}
 	}
@@ -96,7 +102,7 @@ class MPlayerThread extends Thread {
 		final List<String> lines = new ArrayList<>();
 		String line;
 		while ((line = bufferedReader.readLine()) != null) {
-			//			System.out.println(String.format("responce: '%s'", line));
+			LOGGER.trace("responce: '{}'", line);
 
 			lines.add(line.trim());
 			if (stopCriteria.test(line.trim()) || line.trim().startsWith("ANS_ERROR")) {
@@ -148,7 +154,7 @@ class MPlayerThread extends Thread {
 	}
 
 	public void loadAndStart(final File file) {
-		System.out.println("sending load: " + file);
+		LOGGER.trace("sending load: '{}'", file);
 		this.sendRequest(String.format("load \"%s\"\n", file.getAbsolutePath()), l -> l.contains("Starting playback"));
 	}
 
@@ -158,7 +164,7 @@ class MPlayerThread extends Thread {
 	}
 
 	public void stopPlay() {
-		System.out.println("sending stop");
+		LOGGER.trace("sending stop");
 		this.output.print("stop\n");
 		this.output.flush();
 	}

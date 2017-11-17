@@ -1,4 +1,5 @@
 /*
+
  *	This file is the JNI Java part of a Raspberry Pi FrameBuffer project.
  *
  *	Created 2013 by Thomas Welsch (ttww@gmx.de).
@@ -18,6 +19,9 @@ import java.awt.image.DataBufferInt;
 import java.util.concurrent.ArrayBlockingQueue;
 
 import javax.swing.JPanel;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 /**
@@ -48,6 +52,8 @@ import javax.swing.JPanel;
  * If you get the wrong colors, try the CONFIG_FB_ST7735_RGB_ORDER_REVERSED option !
  */
 public class FrameBuffer {
+
+	private static final Logger LOGGER = LoggerFactory.getLogger(FrameBuffer.class);
 
 	private static final int FPS = 40;        // Max. update rate
 
@@ -117,11 +123,11 @@ public class FrameBuffer {
 		this.width  = this.getDeviceWidth(this.deviceInfo);
 		this.height = this.getDeviceHeight(this.deviceInfo);
 
-		System.err.println("Open with " + deviceName + " (" + this.deviceInfo + ")");
-		System.err.println("  width   " + this.getDeviceWidth(this.deviceInfo));
-		System.err.println("  height  " + this.getDeviceHeight(this.deviceInfo));
-		System.err.println("  bpp     " + this.getDeviceBitsPerPixel(this.deviceInfo));
-
+		LOGGER.info("Open with {}", deviceName + " (" + this.deviceInfo + ")");
+		LOGGER.info("  width   {}", this.getDeviceWidth(this.deviceInfo));
+		LOGGER.info("  height  {}", this.getDeviceHeight(this.deviceInfo));
+		LOGGER.info("  bpp     {}", this.getDeviceBitsPerPixel(this.deviceInfo));
+		
 		// We always use ARGB image type.
 		this.img = new BufferedImage(this.width, this.height, BufferedImage.TYPE_INT_ARGB);
 		this.imgBuffer = ((DataBufferInt) this.img.getRaster().getDataBuffer()).getBankData()[0];
@@ -263,6 +269,7 @@ public class FrameBuffer {
 	 * Request an repaint manually. This method can called at high frequencies. An internal repaint tread is used to
 	 * avoid exceeding the FPS value.
 	 */
+	@SuppressWarnings("squid:S899")
 	public void repaint() {
 		if (this.mrt == null) {
 			throw new IllegalStateException("automatic repaint is active, no need to call this");

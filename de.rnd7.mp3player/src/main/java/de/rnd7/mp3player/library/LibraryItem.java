@@ -8,8 +8,12 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.commons.io.FileUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class LibraryItem {
+	private static final Logger LOGGER = LoggerFactory.getLogger(LibraryItem.class);
+
 	private final File file;
 	private Optional<Image> cover;
 	private int currentPosition=0;
@@ -34,7 +38,7 @@ public class LibraryItem {
 					this.length = Integer.parseInt(matcher.group(2));
 				}
 			} catch (final IOException e) {
-				e.printStackTrace();
+				LOGGER.error("Error loading status from {}", statusFile, e);
 			}
 		}
 	}
@@ -61,11 +65,11 @@ public class LibraryItem {
 		this.currentPosition = currentPosition;
 		this.length = length;
 
+		final File statusFile = this.getStatusFile();
 		try {
-			final File statusFile = this.getStatusFile();
 			FileUtils.writeStringToFile(statusFile, currentPosition + ";" + length, "utf8");
 		} catch (final IOException e) {
-			e.printStackTrace();
+			LOGGER.error("Error writing status to {}", statusFile, e);
 		}
 	}
 

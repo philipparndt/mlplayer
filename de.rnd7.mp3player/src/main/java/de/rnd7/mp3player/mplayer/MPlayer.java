@@ -10,18 +10,20 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.google.common.util.concurrent.SimpleTimeLimiter;
 import com.google.common.util.concurrent.TimeLimiter;
 
 public class MPlayer {
+	
+	private static final Logger LOGGER = LoggerFactory.getLogger(MPlayer.class);
+
 	private final ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
-
 	private Optional<MPlayerThread> thread = Optional.empty();
-
 	private File playingFile;
-
 	private final String command;
-
 	private boolean loading;
 
 	public MPlayer(final String command) {
@@ -43,7 +45,7 @@ public class MPlayer {
 			timeLimiter.callWithTimeout(() -> this.waitForPlayer(thread), 5, TimeUnit.SECONDS);
 			this.thread = Optional.of(thread);
 		} catch (TimeoutException | InterruptedException | ExecutionException e) {
-			e.printStackTrace();
+			LOGGER.error(e.getMessage(), e);
 		}
 
 	}
@@ -53,7 +55,7 @@ public class MPlayer {
 			try {
 				Thread.sleep(100);
 			} catch (final InterruptedException e) {
-				e.printStackTrace();
+				LOGGER.error(e.getMessage(), e);
 			}
 		}
 		return null;
@@ -81,7 +83,7 @@ public class MPlayer {
 	}
 
 	private void initPlay(final File file) {
-		System.out.println("PLAY: " + file);
+		LOGGER.trace("PLAY: " + file);
 
 		this.playingFile = file;
 		this.restart();

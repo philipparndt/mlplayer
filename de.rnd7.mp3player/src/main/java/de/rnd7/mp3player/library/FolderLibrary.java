@@ -16,11 +16,17 @@ import java.util.stream.Stream;
 
 import javax.imageio.ImageIO;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import de.rnd7.mp3player.mp4.CoverGernerator;
 import de.rnd7.mp3player.mp4.MP4CoverExtractor;
 import de.rnd7.mp3player.splash.ProgressMonitor;
 
 public class FolderLibrary {
+	
+	private static final Logger LOGGER = LoggerFactory.getLogger(FolderLibrary.class);
+
 	private final File folder;
 	private List<LibraryItem> items = new ArrayList<>();
 	private int currentIndex = -1;
@@ -57,11 +63,11 @@ public class FolderLibrary {
 			try {
 				item.setCover(load(coverFile));
 			} catch (final IOException e) {
-				e.printStackTrace();
+				LOGGER.error("Error loading cover {}", coverFile, e);
 			}
 		}
 		else {
-			System.out.println("Updating cover for " + file);
+			LOGGER.info("Updating cover for " + file);
 
 			final CoverGernerator gernerator = new CoverGernerator($().display.width, $().display.height);
 
@@ -73,7 +79,7 @@ public class FolderLibrary {
 				try {
 					ImageIO.write(cover, "png", coverFile);
 				} catch (final IOException e) {
-					e.printStackTrace();
+					LOGGER.error("Error loading cover {}", coverFile, e);
 				}
 			}
 			else {

@@ -14,8 +14,16 @@ import org.mp4parser.BasicContainer;
 import org.mp4parser.Box;
 import org.mp4parser.IsoFile;
 import org.mp4parser.boxes.apple.AppleCoverBox;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-public class MP4CoverExtractor {
+public final class MP4CoverExtractor {
+
+	private static final Logger LOGGER = LoggerFactory.getLogger(MP4CoverExtractor.class);
+
+	private MP4CoverExtractor() {
+	}
+	
 	public static Optional<BufferedImage> extract(final File file) {
 		try (final IsoFile isoFile = new IsoFile(file)) {
 			final List<Box> boxes = isoFile.getBoxes();
@@ -38,7 +46,7 @@ public class MP4CoverExtractor {
 
 		}
 		catch (final Exception e) {
-			e.printStackTrace();
+			LOGGER.error("Error extracting cover from {}", file, e);
 		}
 
 		return Optional.empty();
@@ -49,7 +57,7 @@ public class MP4CoverExtractor {
 			return Optional.of(ImageIO.read(in));
 		}
 		catch (final IOException e) {
-			e.printStackTrace();
+			LOGGER.error("Error loading coverbox", e);
 			return Optional.empty();
 		}
 	}

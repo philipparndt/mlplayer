@@ -2,7 +2,12 @@ package de.rnd7.mp3player.mplayer;
 
 import java.io.IOException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class VolumeControl {
+	private static final Logger LOGGER = LoggerFactory.getLogger(VolumeControl.class);
+
 	private static final int DELTA = 2;
 
 	private int volume;
@@ -30,7 +35,7 @@ public class VolumeControl {
 		try {
 			Runtime.getRuntime().exec(command);
 		} catch (final IOException e) {
-			e.printStackTrace();
+			LOGGER.error(e.getMessage(), e);
 		}
 	}
 
