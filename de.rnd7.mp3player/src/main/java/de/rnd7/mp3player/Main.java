@@ -1,14 +1,13 @@
 package de.rnd7.mp3player;
 
-import static de.rnd7.mp3player.hw.HW.$;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
-import com.pi4j.io.gpio.GpioFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import de.rnd7.mp3player.library.FolderLibrary;
 import de.rnd7.mp3player.mplayer.MPlayer;
@@ -22,16 +21,23 @@ import de.rnd7.mp3player.splash.ProgressMonitorDialog;
  */
 public class Main {
 
-	public Main(final String args[]) throws Exception {
-		final Properties properties = this.loadProperties(args);
+	private static final Logger LOGGER = LoggerFactory.getLogger(Main.class);
 
-		final FolderLibrary library = this.initLibrary(properties);
-		final VolumeControl volumeControl = this.initVolume(properties);
-		final MPlayer player = this.initMPlayer(properties);
-
-		new Controller(new Viewer(), library, player, volumeControl);
-		
-		PlayerMainLoop.exec();
+	public Main(final String args[]) {
+		try {
+			final Properties properties = this.loadProperties(args);
+	
+			final FolderLibrary library = this.initLibrary(properties);
+			final VolumeControl volumeControl = this.initVolume(properties);
+			final MPlayer player = this.initMPlayer(properties);
+	
+			new Controller(new Viewer(), library, player, volumeControl);
+			
+			PlayerMainLoop.exec();
+		}
+		catch (IOException e) {
+			LOGGER.error(e.getMessage(), e);
+		}
 	}
 
 	private MPlayer initMPlayer(final Properties properties) {
