@@ -11,6 +11,7 @@ import javax.imageio.ImageIO;
 
 import org.junit.Test;
 
+@SuppressWarnings("squid:S3415")
 public class CoverGeneratorTest {
 	@Test
 	public void test_cover1() throws Exception {

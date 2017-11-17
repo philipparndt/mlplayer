@@ -68,6 +68,8 @@ public class FrameBuffer {
 	private int[] imgBuffer;
 
 	private ManualRepaintThread	mrt;
+	
+	private final Object deviceMutex = new Object();
 
 	// -----------------------------------------------------------------------------------------------------------------
 
@@ -150,7 +152,7 @@ public class FrameBuffer {
 	 * @return ScreenPanel...
 	 */
 	public ScreenPanel getScreenPanel() {
-		synchronized (this.deviceName) {
+		synchronized (deviceMutex) {
 			if (this.screenPanel != null) {
 				throw new IllegalStateException("Only one screen panel supported");
 			}
@@ -245,7 +247,8 @@ public class FrameBuffer {
 		public void run() {
 			final int SLEEP_TIME = 1000 / FPS;
 
-			// System.err.println("Run Update");
+			LOGGER.trace("Run Update");
+			
 			while (FrameBuffer.this.deviceInfo != 0) {
 
 				FrameBuffer.this.updateScreen();
@@ -253,6 +256,8 @@ public class FrameBuffer {
 				try {
 					sleep(SLEEP_TIME);
 				} catch (final InterruptedException e) {
+					LOGGER.trace(e.getMessage(), e);
+					Thread.currentThread().interrupt();
 					break;
 				}
 
@@ -263,7 +268,7 @@ public class FrameBuffer {
 
 	// -----------------------------------------------------------------------------------------------------------------
 
-	private final ArrayBlockingQueue<Boolean> repaintQueue = new ArrayBlockingQueue<Boolean>(1);
+	private final ArrayBlockingQueue<Boolean> repaintQueue = new ArrayBlockingQueue<>(1);
 
 	/**
 	 * Request an repaint manually. This method can called at high frequencies. An internal repaint tread is used to
@@ -301,6 +306,8 @@ public class FrameBuffer {
 
 				}    // while
 			} catch (final InterruptedException e) {
+				LOGGER.trace(e.getMessage(), e);
+				Thread.currentThread().interrupt();
 			}
 
 		}    // class UpdateThread
@@ -323,7 +330,7 @@ public class FrameBuffer {
 	 * Close the device.
 	 */
 	public void close() {
-		synchronized (this.deviceName) {
+		synchronized (deviceMutex) {
 			this.closeDevice(this.deviceInfo);
 			this.deviceInfo = 0;
 			this.img = null;
@@ -345,7 +352,7 @@ public class FrameBuffer {
 	public boolean updateScreen() {
 
 
-		synchronized (this.deviceName) {
+		synchronized (deviceMutex) {
 			if (this.deviceInfo == 0) {
 				return false;
 			}
