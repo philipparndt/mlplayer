@@ -15,13 +15,13 @@ public class Display {
 	public final BufferedImage screen;
 	public final Graphics2D graphics;
 
-	public final int width = 320;
-	public final int height = 240;
+	private static final int WIDTH = 320;
+	private static final int HEIGHT = 240;
 
-	public final int b1 = 5;
-	public final int b2 = 95;
-	public final int b3 = 185;
-	public final int b4 = 275;
+	private static final int B1 = 5;
+	private static final int B2 = 95;
+	private static final int B3 = 185;
+	private static final int B4 = 275;
 
 	public final BacklightControl backlight;
 
@@ -54,6 +54,53 @@ public class Display {
 		this.graphics.setColor(Color.BLACK);
 		this.graphics.fillRect(0, 0, 320, 240);
 		this.refresh();
+	}
+	
+	/**
+	 * 
+	 * @return the x position of button 1 
+	 */
+	public int getB1() {
+		return B1;
+	}
+	/**
+	 * 
+	 * @return the x position of button 2 
+	 */
+	public int getB2() {
+		return B2;
+	}
+	
+	/**
+	 * 
+	 * @return the x position of button 3
+	 */
+	public int getB3() {
+		return B3;
+	}
+	
+	/**
+	 * 
+	 * @return the x position of button 4 
+	 */
+	public int getB4() {
+		return B4;
+	}
+	
+	/**
+	 * 
+	 * @return the display width in pixels
+	 */
+	public int getWidth() {
+		return WIDTH;
+	}
+	
+	/**
+	 * 
+	 * @return the display height in pixels
+	 */
+	public int getHeight() {
+		return HEIGHT;
 	}
 
 }

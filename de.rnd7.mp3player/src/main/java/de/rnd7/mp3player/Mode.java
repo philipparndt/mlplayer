@@ -6,6 +6,8 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.util.Optional;
 
+import de.rnd7.mp3player.hw.Display;
+
 public class Mode {
 
 	private Optional<Runnable> commandL = Optional.empty();
@@ -39,8 +41,8 @@ public class Mode {
 	}
 
 	public void paint(final Graphics2D graphics, final int length, final int position) {
-		graphics.drawImage(this.left, $().display.b3, 195, null);
-		graphics.drawImage(this.right, $().display.b4, 195, null);
+		graphics.drawImage(this.left, $().display.getB3(), 195, null);
+		graphics.drawImage(this.right, $().display.getB4(), 195, null);
 	}
 
 	@Override

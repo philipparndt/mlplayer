@@ -60,12 +60,12 @@ public class ProgressMonitorDialog implements ProgressMonitor {
 		graphics.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 8));
 
 		if (this.title != null) {
-			graphics.drawString(this.title, 0, $().display.height - 10);
+			graphics.drawString(this.title, 0, $().display.getHeight() - 10);
 		}
 
-		final Double len = (double) $().display.width / (double) this.total * this.current;
+		final Double len = (double) $().display.getWidth() / (double) this.total * this.current;
 		graphics.setColor(Color.CYAN);
-		graphics.fillRect(0, $().display.height - 5, len.intValue(), 5);
+		graphics.fillRect(0, $().display.getHeight() - 5, len.intValue(), 5);
 	}
 
 	private static BufferedImage load(final String name) throws IOException {

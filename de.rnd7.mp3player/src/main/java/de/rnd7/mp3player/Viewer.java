@@ -74,7 +74,7 @@ public class Viewer {
 		if (this.length == Integer.MAX_VALUE) {
 			graphics.setColor(Color.WHITE);
 			graphics.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 24));
-			graphics.drawString("Loading...", $().display.b1, $().display.height - 17);
+			graphics.drawString("Loading...", $().display.getB1(), $().display.getHeight() - 17);
 		}
 		else {
 			if (this.playing || this.position > 10) {
@@ -89,10 +89,10 @@ public class Viewer {
 				button1 = this.play;
 			}
 
-			graphics.drawImage(button1, $().display.b1, 195, null);
+			graphics.drawImage(button1, $().display.getB1(), 195, null);
 
 			if (this.modeCount > 1) {
-				graphics.drawImage(this.mode, $().display.b2, 195, null);
+				graphics.drawImage(this.mode, $().display.getB2(), 195, null);
 			}
 
 			if (this.currentMode != null) {
@@ -105,9 +105,9 @@ public class Viewer {
 
 	private void drawProgress(final Graphics2D graphics) {
 		graphics.setColor(Color.GRAY);
-		graphics.fillRect(0, 180, $().display.width, 5);
+		graphics.fillRect(0, 180, $().display.getWidth(), 5);
 
-		final Double len = (double) $().display.width / (double) this.length * this.position;
+		final Double len = (double) $().display.getWidth() / (double) this.length * this.position;
 		graphics.setColor(Color.CYAN);
 		graphics.fillRect(0, 180, len.intValue(), 5);
 	}

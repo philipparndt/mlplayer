@@ -28,7 +28,7 @@ public class ModeShowTime extends Mode {
 		final String duration = "-" + this.format(remaining);
 
 		final int width = graphics.getFontMetrics().stringWidth(duration);
-		final int x = $().display.width - 10 - width;
+		final int x = $().display.getWidth() - 10 - width;
 
 		graphics.drawString(duration, x, 221);
 	}

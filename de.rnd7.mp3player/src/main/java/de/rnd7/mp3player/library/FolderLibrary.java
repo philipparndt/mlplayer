@@ -69,7 +69,7 @@ public class FolderLibrary {
 		else {
 			LOGGER.info("Updating cover for " + file);
 
-			final CoverGernerator gernerator = new CoverGernerator($().display.width, $().display.height);
+			final CoverGernerator gernerator = new CoverGernerator($().display.getWidth(), $().display.getHeight());
 
 			final Optional<BufferedImage> newCover = MP4CoverExtractor.extract(file).map(gernerator::generateCover);
 			if (newCover.isPresent()) {

@@ -23,7 +23,7 @@ public class ModeVolume extends Mode {
 	}
 
 	private void drawProgress(final Graphics2D graphics) {
-		final int totalWidth = $().display.width - $().display.b3;
+		final int totalWidth = $().display.getWidth() - $().display.getB3();
 
 		final int min = this.volume.getMin();
 		final int max = this.volume.getMax();
@@ -40,7 +40,7 @@ public class ModeVolume extends Mode {
 		else {
 			graphics.setColor(new Color(255, 255, 255, 100));
 		}
-		graphics.fillRect($().display.width - totalWidth - 5, 195, len.intValue(), 40);
+		graphics.fillRect($().display.getWidth() - totalWidth - 5, 195, len.intValue(), 40);
 	}
 
 }
