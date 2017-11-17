@@ -123,7 +123,7 @@ public class FrameBuffer {
 		this.width  = this.getDeviceWidth(this.deviceInfo);
 		this.height = this.getDeviceHeight(this.deviceInfo);
 
-		LOGGER.info("Open with {}", deviceName + " (" + this.deviceInfo + ")");
+		LOGGER.info("Open with {} ({})", deviceName, this.deviceInfo);
 		LOGGER.info("  width   {}", this.getDeviceWidth(this.deviceInfo));
 		LOGGER.info("  height  {}", this.getDeviceHeight(this.deviceInfo));
 		LOGGER.info("  bpp     {}", this.getDeviceBitsPerPixel(this.deviceInfo));
