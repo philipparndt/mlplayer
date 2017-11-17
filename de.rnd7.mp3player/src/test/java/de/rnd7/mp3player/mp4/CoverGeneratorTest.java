@@ -17,10 +17,10 @@ public class CoverGeneratorTest {
 		CoverGernerator generator = new CoverGernerator(100, 100);
 
 		Rectangle2D bounds = generator.findBounds(loadImage("cover1.png"));
-		assertEquals(15, bounds.getX(), 0d);
-		assertEquals(20, bounds.getY(), 0d);
-		assertEquals(50, bounds.getWidth(), 0d);
-		assertEquals(50, bounds.getHeight(), 0d);
+		assertEquals(15, bounds.getX(),  0.1d);
+		assertEquals(20, bounds.getY(),  0.1d);
+		assertEquals(50, bounds.getWidth(),  0.1d);
+		assertEquals(50, bounds.getHeight(),  0.1d);
 	}
 	
 	@Test
@@ -28,10 +28,10 @@ public class CoverGeneratorTest {
 		CoverGernerator generator = new CoverGernerator(100, 100);
 
 		Rectangle2D bounds = generator.findBounds(loadImage("cover2.png"));
-		assertEquals(15, bounds.getX(), 0d);
-		assertEquals(20, bounds.getY(), 0d);
-		assertEquals(50, bounds.getWidth(), 0d);
-		assertEquals(50, bounds.getHeight(), 0d);
+		assertEquals(15, bounds.getX(), 0.1d);
+		assertEquals(20, bounds.getY(), 0.1d);
+		assertEquals(50, bounds.getWidth(), 0.1d);
+		assertEquals(50, bounds.getHeight(), 0.1d);
 	}
 	
 	@Test
@@ -39,10 +39,10 @@ public class CoverGeneratorTest {
 		CoverGernerator generator = new CoverGernerator(100, 100);
 
 		Rectangle2D bounds = generator.findBounds(loadImage("cover3.png"));
-		assertEquals(35, bounds.getX(), 0d);
-		assertEquals(35, bounds.getY(), 0d);
-		assertEquals(40, bounds.getWidth(), 0d);
-		assertEquals(30, bounds.getHeight(), 0d);
+		assertEquals(35, bounds.getX(), 0.1d);
+		assertEquals(35, bounds.getY(), 0.1d);
+		assertEquals(40, bounds.getWidth(), 0.1d);
+		assertEquals(30, bounds.getHeight(), 0.1d);
 	}
 
 	private BufferedImage loadImage(String name) throws IOException {
