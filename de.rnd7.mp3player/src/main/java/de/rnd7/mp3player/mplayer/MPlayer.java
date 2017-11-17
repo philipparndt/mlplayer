@@ -34,7 +34,7 @@ public class MPlayer {
 
 		this.thread.ifPresent(old -> {
 			old.stopPlay();
-			old.exit();
+			old.destroyPlayer();
 		});
 
 		final MPlayerThread thread = new MPlayerThread(this.command);
@@ -44,10 +44,12 @@ public class MPlayer {
 		try {
 			timeLimiter.callWithTimeout(() -> this.waitForPlayer(thread), 5, TimeUnit.SECONDS);
 			this.thread = Optional.of(thread);
-		} catch (TimeoutException | InterruptedException | ExecutionException e) {
+		} catch (final InterruptedException e) {
+			LOGGER.info(e.getMessage(), e);
+			Thread.currentThread().interrupt();
+		} catch (TimeoutException | ExecutionException e) {
 			LOGGER.error(e.getMessage(), e);
 		}
-
 	}
 
 	private Void waitForPlayer(final MPlayerThread thread) {
@@ -55,7 +57,8 @@ public class MPlayer {
 			try {
 				Thread.sleep(100);
 			} catch (final InterruptedException e) {
-				LOGGER.error(e.getMessage(), e);
+				LOGGER.info(e.getMessage(), e);
+				Thread.currentThread().interrupt();
 			}
 		}
 		return null;
@@ -76,7 +79,7 @@ public class MPlayer {
 	public void stop() {
 		this.thread.ifPresent(old -> {
 			old.stopPlay();
-			old.exit();
+			old.destroyPlayer();
 		});
 
 		this.thread = Optional.empty();

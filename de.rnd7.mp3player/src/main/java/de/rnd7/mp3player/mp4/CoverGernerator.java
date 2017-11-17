@@ -36,7 +36,7 @@ public class CoverGernerator {
 		final Image background = toBeBlurred.getScaledInstance(this.width, this.height, Image.SCALE_FAST);
 
 		BufferedImage blurred = this.blur(toBufferedImage(background), 40);
-		blurred = this.darken(blurred);
+		this.darken(blurred);
 		blurred = blurred.getSubimage(40, 40, this.width - 40*2, this.height-40*2);
 
 		final BufferedImage result = new BufferedImage(this.width, this.height, BufferedImage.TYPE_INT_ARGB);
@@ -136,10 +136,9 @@ public class CoverGernerator {
 		return s >=0.5f && b>=0.5f;
 	}
 
-	private BufferedImage darken(final BufferedImage input) {
+	private void darken(final BufferedImage input) {
 		final RescaleOp rescaleOp = new RescaleOp(0.7f, 15, null);
 		rescaleOp.filter(input, input);
-		return input;
 	}
 
 	private BufferedImage blur(final BufferedImage input, final int radius) {

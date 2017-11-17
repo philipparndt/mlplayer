@@ -34,7 +34,7 @@ class MPlayerThread extends Thread {
 	private InputStreamReader input;
 	private PrintStream output;
 	private Process process;
-	public boolean ready = false;
+	private boolean ready = false;
 
 	private final ReentrantLock lock = new ReentrantLock();
 
@@ -70,7 +70,7 @@ class MPlayerThread extends Thread {
 		return this.ready;
 	}
 
-	public void exit() {
+	public void destroyPlayer() {
 		this.process.destroy();
 	}
 
