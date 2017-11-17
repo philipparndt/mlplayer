@@ -21,8 +21,6 @@ import de.rnd7.mp3player.splash.ProgressMonitorDialog;
  *
  */
 public class Main {
-	
-	private static boolean running = true;
 
 	public Main(final String args[]) throws Exception {
 		final Properties properties = this.loadProperties(args);
@@ -32,28 +30,8 @@ public class Main {
 		final MPlayer player = this.initMPlayer(properties);
 
 		new Controller(new Viewer(), library, player, volumeControl);
-
 		
-		Runtime.getRuntime().addShutdownHook(new Thread() {
-			@Override
-			public void run() {
-				running = false;
-			}
-		});
-		
-		try {
-			while(running) {
-				Thread.sleep(500);
-			}
-		}
-		catch (final InterruptedException e) {
-			throw e;
-		}
-		finally {
-			$().display.clear();
-
-			GpioFactory.getInstance().shutdown();
-		}
+		PlayerMainLoop.exec();
 	}
 
 	private MPlayer initMPlayer(final Properties properties) {
