@@ -20,8 +20,8 @@ public class Viewer {
 
 	private boolean playing = false;
 	private boolean paused = false;
-	private Duration position;
-	private Duration length;
+	private Duration position = Duration.ZERO;
+	private Duration length = Duration.ZERO;
 	private Optional<Image> cover = Optional.empty();
 	private Mode currentMode;
 	private int modeCount;
