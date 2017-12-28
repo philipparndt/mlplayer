@@ -64,12 +64,15 @@ public final class Main {
 	private static VolumeControl initVolume(final Properties properties) {
 		final String propertyMixer = properties.getProperty("mixer");
 		final int mixerMin = toInt(properties.getProperty("mixer.min"), 1);
-		final int mixerDefault = toInt(properties.getProperty("mixer.min"), 10);
+		final int mixerDefault = toInt(properties.getProperty("mixer.default"), 10);
 		final int mixerMax = toInt(properties.getProperty("mixer.max"), 100);
 		final VolumeControl volumeControl = new VolumeControl(propertyMixer, mixerMin, mixerMax);
 		if (mixerDefault >= 0) {
 			volumeControl.set(mixerDefault);
 		}
+		LOGGER.info("Mixer min: " + mixerMin);
+		LOGGER.info("Mixer max: " + mixerMax);
+		LOGGER.info("Mixer default: " + mixerDefault);
 		return volumeControl;
 	}
 
