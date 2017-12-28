@@ -13,15 +13,12 @@ public class ModeShowTime extends Mode {
 	}
 
 	@Override
-	public void paint(final Graphics2D graphics, final int length, final int position, int chapters, int chapter) {
-		if (length < 0 || position < 0 || length == Integer.MAX_VALUE) {
+	public void paint(final Graphics2D graphics, final Duration length, final Duration position, int chapters, int chapter) {
+		if (!isPlaying(length, position)) {
 			return;
 		}
 
-		final Duration l = Duration.ofSeconds(length);
-		final Duration p = Duration.ofSeconds(position);
-
-		final Duration remaining = l.minus(p);
+		final Duration remaining = length.minus(position);
 
 		graphics.setColor(Color.WHITE);
 		graphics.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 24));

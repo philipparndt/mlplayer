@@ -122,16 +122,16 @@ public class MPlayer {
 	 * 
 	 * @return the position of the current file in seconds
 	 */
-	public int getPosition() {
-		return this.thread.map(MPlayerThread::getPosition).orElse(-1);
+	public Duration getPosition() {
+		return Duration.ofSeconds(this.thread.map(MPlayerThread::getPosition).orElse(-1));
 	}
 
 	/**
 	 * 
 	 * @return the length of the current file in seconds
 	 */
-	public int getLength() {
-		return this.thread.map(MPlayerThread::getLength).orElse(-1);
+	public Duration getLength() {
+		return Duration.ofSeconds(this.thread.map(MPlayerThread::getLength).orElse(-1));
 	}
 
 	public void forward(final Duration duration) {
@@ -156,5 +156,27 @@ public class MPlayer {
 	
 	public int getChapters() {
 		return this.thread.map(MPlayerThread::getChapters).orElse(-1);
+	}
+
+	public void nextChapter() {
+		int chapters = getChapters();
+		int chapter = getChapter();
+		if (chapters >= 0) {
+			if (chapter >=0 && (chapter + 1 < chapters)) {
+				setChapter(chapter + 1);
+			}
+			else {
+				// Seek end
+				seek(getLength());
+			}
+		}
+	}
+
+	public void prevoiusChapter() {
+		int chapters = getChapters();
+		int chapter = Math.max(0, getChapter() - 1);
+		if (chapters >= 0) {
+			setChapter(chapter - 1);
+		}
 	}
 }

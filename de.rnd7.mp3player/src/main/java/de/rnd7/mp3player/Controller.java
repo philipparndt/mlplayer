@@ -146,9 +146,9 @@ public class Controller {
 
 			this.showLoading();
 
-			final int currentPosition = item.getCurrentPosition();
-			if (currentPosition > 0) {
-				this.player.play(item.getFile(), Duration.ofSeconds(currentPosition));
+			final Duration currentPosition = item.getCurrentPosition();
+			if (currentPosition.getSeconds() > 0) {
+				this.player.play(item.getFile(), currentPosition);
 			}
 			else {
 				this.player.play(item.getFile());
@@ -173,19 +173,11 @@ public class Controller {
 	}
 
 	private void nextChapter() {
-		int chapters = player.getChapters();
-		int chapter = player.getChapter();
-		if (chapters >= 0 && chapter >=0 && (chapter + 1 < chapters)) {
-			player.setChapter(chapter + 1);
-		}
+		player.nextChapter();
 	}
 	
 	private void prevoiusChapter() {
-		int chapters = player.getChapters();
-		int chapter = player.getChapter();
-		if (chapters >= 0 && chapter >=0 && (chapter - 1 >= 0)) {
-			player.setChapter(chapter - 1);
-		}
+		player.prevoiusChapter();
 	}
 	
 	private void forward() {
@@ -205,8 +197,8 @@ public class Controller {
 
 	private void saveProgressNow() {
 		this.library.getCurrentItem().ifPresent(item -> {
-			final int length = this.player.getLength();
-			final int position = this.player.getPosition();
+			final Duration length = this.player.getLength();
+			final Duration position = this.player.getPosition();
 
 			item.setPosition(position, length);
 		});
@@ -234,7 +226,7 @@ public class Controller {
 			this.viewer.setPosition(item.getCurrentPosition(), item.getLength());
 		}
 		else {
-			this.viewer.setPosition(0, 0);
+			this.viewer.setPosition(Duration.ZERO, Duration.ZERO);
 		}
 
 		this.viewer.setMode(this.modes.getCurrentMode());
@@ -244,7 +236,7 @@ public class Controller {
 
 	private void showLoading() {
 		this.viewer.setCurrent(this.library.getCurrentItem().flatMap(LibraryItem::getCover));
-		this.viewer.setPosition(0, Integer.MAX_VALUE);
+		this.viewer.setPosition(Duration.ZERO, Duration.ofSeconds(Long.MAX_VALUE));
 		this.viewer.update();
 	}
 }

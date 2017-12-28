@@ -4,6 +4,7 @@ import static de.rnd7.mp3player.hw.HW.$;
 
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
+import java.time.Duration;
 import java.util.Optional;
 
 public class Mode {
@@ -38,7 +39,7 @@ public class Mode {
 		return this.commandR;
 	}
 
-	public void paint(final Graphics2D graphics, final int length, final int position, int chapters, int chapter) {
+	public void paint(final Graphics2D graphics, final Duration length, final Duration position, int chapters, int chapter) {
 		graphics.drawImage(this.left, $().display.getB3(), 195, null);
 		graphics.drawImage(this.right, $().display.getB4(), 195, null);
 	}
@@ -46,6 +47,10 @@ public class Mode {
 	@Override
 	public String toString() {
 		return this.name;
+	}
+	
+	public boolean isPlaying(final Duration length, final Duration position) {
+		return (!(length.isNegative() || position.isNegative() || length.getSeconds() == Long.MAX_VALUE)); 
 	}
 
 }

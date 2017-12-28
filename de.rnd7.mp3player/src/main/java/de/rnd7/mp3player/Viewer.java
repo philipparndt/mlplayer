@@ -8,6 +8,7 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.time.Duration;
 import java.util.Optional;
 
 public class Viewer {
@@ -19,8 +20,8 @@ public class Viewer {
 
 	private boolean playing = false;
 	private boolean paused = false;
-	private int position;
-	private int length;
+	private Duration position;
+	private Duration length;
 	private Optional<Image> cover = Optional.empty();
 	private Mode currentMode;
 	private int modeCount;
@@ -53,7 +54,7 @@ public class Viewer {
 		this.paused = paused;
 	}
 
-	public void setPosition(final int position, final int length) {
+	public void setPosition(final Duration position, final Duration length) {
 		this.position = position;
 		this.length = length;
 	}
@@ -81,13 +82,13 @@ public class Viewer {
 		graphics.drawImage(this.bottomBar, 0, 185, null);
 
 
-		if (this.length == Integer.MAX_VALUE) {
+		if (this.length.getSeconds() == Long.MAX_VALUE) {
 			graphics.setColor(Color.WHITE);
 			graphics.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 24));
 			graphics.drawString("Loading...", $().display.getB1(), $().display.getHeight() - 17);
 		}
 		else {
-			if (this.playing || this.position > 10) {
+			if (this.playing || this.position.getSeconds() > 10) {
 				this.drawProgress(graphics);
 			}
 
@@ -117,7 +118,7 @@ public class Viewer {
 		graphics.setColor(Color.GRAY);
 		graphics.fillRect(0, 180, $().display.getWidth(), 5);
 
-		final Double len = (double) $().display.getWidth() / (double) this.length * this.position;
+		final Double len = (double) $().display.getWidth() / (double) this.length.getSeconds() * this.position.getSeconds();
 		graphics.setColor(Color.CYAN);
 		graphics.fillRect(0, 180, len.intValue(), 5);
 	}

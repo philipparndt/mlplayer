@@ -4,6 +4,7 @@ import static de.rnd7.mp3player.hw.HW.$;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.time.Duration;
 
 import de.rnd7.mp3player.mplayer.VolumeControl;
 
@@ -16,7 +17,7 @@ public class ModeVolume extends Mode {
 	}
 
 	@Override
-	public void paint(final Graphics2D graphics, final int length, final int position, int chapters, int chapter) {
+	public void paint(final Graphics2D graphics, final Duration length, final Duration position, int chapters, int chapter) {
 		this.drawProgress(graphics);
 
 		super.paint(graphics, length, position, chapters, chapter);
