@@ -110,7 +110,7 @@ public class MPlayer {
 
 		this.thread.ifPresent(t -> {
 			t.loadAndStart(file);
-			t.seek(position);
+			t.seekToPosition(position);
 		});
 	}
 
@@ -143,7 +143,7 @@ public class MPlayer {
 	}
 
 	public void seek(final Duration position) {
-		this.thread.ifPresent(t -> t.seek(position));
+		this.thread.ifPresent(t -> t.seekToPosition(position));
 	}
 
 	public int getChapter() {

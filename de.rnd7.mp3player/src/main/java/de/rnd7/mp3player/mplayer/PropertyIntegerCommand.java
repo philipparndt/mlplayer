@@ -3,12 +3,12 @@ package de.rnd7.mp3player.mplayer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-class ReadIntegerCommand extends MPlayerCommand<Integer> {
+class PropertyIntegerCommand extends MPlayerPropertyCommand<Integer> {
 
 	private final Pattern pattern;
 	private final String propertyName;
 
-	public ReadIntegerCommand(final String propertyName, final MPlayerThread player) {
+	public PropertyIntegerCommand(final String propertyName, final MPlayerThread player) {
 		super(player);
 
 		this.propertyName = propertyName;
@@ -17,7 +17,7 @@ class ReadIntegerCommand extends MPlayerCommand<Integer> {
 	}
 
 	@Override
-	public Integer execute() {
+	public Integer read() {
 		return this.getPlayer()
 				.sendPropertyRequest(this.propertyName)
 				.stream()
@@ -28,4 +28,8 @@ class ReadIntegerCommand extends MPlayerCommand<Integer> {
 				.findFirst().orElse(-1);
 	}
 
+	@Override
+	public void write(Integer chapter) {
+		getPlayer().sendRequest(String.format("set_property %s %d\n", propertyName, chapter));
+	}
 }

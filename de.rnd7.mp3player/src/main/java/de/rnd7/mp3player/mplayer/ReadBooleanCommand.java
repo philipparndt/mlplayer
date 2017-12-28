@@ -3,7 +3,7 @@ package de.rnd7.mp3player.mplayer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-class ReadBooleanCommand extends MPlayerCommand<Boolean>{
+class ReadBooleanCommand extends MPlayerPropertyCommand<Boolean>{
 
 	private final Pattern pattern;
 	private final String propertyName;
@@ -16,7 +16,7 @@ class ReadBooleanCommand extends MPlayerCommand<Boolean>{
 	}
 
 	@Override
-	public Boolean execute() {
+	public Boolean read() {
 		return this.getPlayer()
 				.sendPropertyRequest(this.propertyName)
 				.stream()

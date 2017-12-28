@@ -79,7 +79,7 @@ class MPlayerThread extends Thread {
 		this.sendRequest(String.format("get_property %s\n",propertyName));
 	}
 
-	private void sendRequest(final String request) {
+	void sendRequest(final String request) {
 		LOGGER.trace("request: {}", request);
 		this.output.print(request);
 		this.output.flush();
@@ -159,64 +159,58 @@ class MPlayerThread extends Thread {
 	}
 
 	public void playPause() {
-		this.output.print("pause\n");
-		this.output.flush();
+		sendRequest("pause\n");
 	}
 
 	public void stopPlay() {
-		LOGGER.trace("sending stop");
-		this.output.print("stop\n");
-		this.output.flush();
+		sendRequest("stop\n");
 	}
 
 	public int getLength() {
-		return new ReadIntegerCommand("length", this).execute();
+		return new PropertyIntegerCommand("length", this).read();
 	}
 
 	public int getPosition() {
-		return new ReadIntegerCommand("time_pos", this).execute();
+		return new PropertyIntegerCommand("time_pos", this).read();
 	}
 
 	public boolean isPlaying() {
-		return new ReadIntegerCommand("time_pos", this).execute() >= 0;
+		return new PropertyIntegerCommand("time_pos", this).read() >= 0;
 	}
 
 	public int getChapters() {
-		return new ReadIntegerCommand("chapters", this).execute();
+		return new PropertyIntegerCommand("chapters", this).read();
 	}
 	
 	public int getChapter() {
-		return new ReadIntegerCommand("chapter", this).execute();
+		return new PropertyIntegerCommand("chapter", this).read();
 	}
 	
 	public void setChapter(int chapter) {
-		this.output.print(String.format("set_property chapter %d\n", chapter));
-		this.output.flush();	}
+		 new PropertyIntegerCommand("chapter", this).write(chapter);
+	}
 	
 	public boolean isPaused() {
-		return new ReadBooleanCommand("pause", this).execute();
+		return new ReadBooleanCommand("pause", this).read();
 	}
 
 	public void forward(final Duration duration) {
-		this.output.print(String.format("seek %d 0\n", duration.toMillis() / 1000));
-		this.output.flush();
+		seek(duration.getSeconds(), SeekType.RELATIVE);
 	}
 
 	public void backward(final Duration duration) {
-		this.output.print(String.format("seek -%d 0\n", duration.toMillis() / 1000));
-		this.output.flush();
+		seek(Duration.ZERO.minus(duration).getSeconds(), SeekType.RELATIVE);
 	}
 
-	public void seek(final Duration position) {
-		/*
-		seek <value> [type]
-				Seek to some place in the movie.
-				   0 is a relative seek of +/- <value> seconds (default).
-				   1 is a seek to <value> % in the movie.
-				   2 is a seek to an absolute position of <value> seconds.
-		 */
-		final String seekCmd = String.format("seek %d 2\n", position.toMillis() / 1000);
-		this.output.print(seekCmd);
-		this.output.flush();
+	public void seekToPosition(final Duration position) {
+		seek(position.getSeconds(), SeekType.ABSOLUTE);
+	}
+	
+	public void seekToPercentage(final int percentage) {
+		seek(percentage, SeekType.PERCENTAGE);
+	}
+	
+	public void seek(long value, SeekType type) {
+		sendRequest(String.format("seek %d %d\n", value, type.ordinal()));
 	}
 }
