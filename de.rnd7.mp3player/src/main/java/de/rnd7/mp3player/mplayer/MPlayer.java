@@ -176,7 +176,7 @@ public class MPlayer {
 		int chapters = getChapters();
 		int chapter = Math.max(0, getChapter() - 1);
 		if (chapters >= 0) {
-			setChapter(chapter - 1);
+			setChapter(chapter);
 		}
 	}
 }
