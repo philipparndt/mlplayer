@@ -181,6 +181,18 @@ class MPlayerThread extends Thread {
 		return new ReadIntegerCommand("time_pos", this).execute() >= 0;
 	}
 
+	public int getChapters() {
+		return new ReadIntegerCommand("chapters", this).execute();
+	}
+	
+	public int getChapter() {
+		return new ReadIntegerCommand("chapter", this).execute();
+	}
+	
+	public void setChapter(int chapter) {
+		this.output.print(String.format("set_property chapter %d\n", chapter));
+		this.output.flush();	}
+	
 	public boolean isPaused() {
 		return new ReadBooleanCommand("pause", this).execute();
 	}

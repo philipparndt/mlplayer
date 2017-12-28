@@ -43,15 +43,20 @@ public class Controller {
 				.setCommandL(Images.load("left.png"), this::prevoius)
 				.setCommandR(Images.load("right.png"), this::next));
 
-		this.modes.addPlaying(new ModeShowTime()
+		this.modes
+		.addPlaying(new ModeShowChapter()
+				.setCommandL(Images.load("left.png"), this::prevoiusChapter)
+				.setCommandR(Images.load("right.png"), this::nextChapter))
+		.addPlaying(new ModeVolume(this.volumeControl)
+				.setCommandL(Images.load("volume-down.png"), this.volumeControl::down)
+				.setCommandR(Images.load("volume-up.png"), this.volumeControl::up))
+		.addPlaying(new ModeShowTime()
 				.setCommandL(Images.load("backward.png"), this::backward)
 				.setCommandR(Images.load("forward.png"), this::forward))
 		.addPlaying(new Mode("seek")
 				.setCommandL(Images.load("backward.png"), this::backward)
 				.setCommandR(Images.load("forward.png"), this::forward))
-		.addPlaying(new ModeVolume(this.volumeControl)
-				.setCommandL(Images.load("volume-down.png"), this.volumeControl::down)
-				.setCommandR(Images.load("volume-up.png"), this.volumeControl::up));
+		;
 
 		this.modes.initStoppedMode();
 	}
@@ -167,6 +172,22 @@ public class Controller {
 		this.refresh();
 	}
 
+	private void nextChapter() {
+		int chapters = player.getChapters();
+		int chapter = player.getChapter();
+		if (chapters >= 0 && chapter >=0 && (chapter + 1 < chapters)) {
+			player.setChapter(chapter + 1);
+		}
+	}
+	
+	private void prevoiusChapter() {
+		int chapters = player.getChapters();
+		int chapter = player.getChapter();
+		if (chapters >= 0 && chapter >=0 && (chapter - 1 >= 0)) {
+			player.setChapter(chapter - 1);
+		}
+	}
+	
 	private void forward() {
 		this.player.forward(Duration.ofSeconds(10));
 	}
@@ -205,6 +226,8 @@ public class Controller {
 		if (playing) {
 			this.viewer.setPaused(this.player.isPaused());
 			this.viewer.setPosition(this.player.getPosition(), this.player.getLength());
+			this.viewer.setChapter(player.getChapter());
+			this.viewer.setChapters(player.getChapters());
 		}
 		else if (currentItem.isPresent()) {
 			final LibraryItem item = currentItem.get();

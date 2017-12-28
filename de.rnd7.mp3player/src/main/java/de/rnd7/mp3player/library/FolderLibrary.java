@@ -31,8 +31,14 @@ public class FolderLibrary {
 	private List<LibraryItem> items = new ArrayList<>();
 	private int currentIndex = -1;
 
-	public FolderLibrary(final File folder) {
+	private int width;
+
+	private int height;
+
+	public FolderLibrary(final File folder, int width, int height) {
 		this.folder = folder;
+		this.width = width;
+		this.height = height;
 	}
 
 	public void init(final ProgressMonitor monitor) {
@@ -69,7 +75,7 @@ public class FolderLibrary {
 		else {
 			LOGGER.info("Updating cover for {}", file);
 
-			final CoverGernerator gernerator = new CoverGernerator($().display.getWidth(), $().display.getHeight());
+			final CoverGernerator gernerator = new CoverGernerator(width, height);
 
 			final Optional<BufferedImage> newCover = MP4CoverExtractor.extract(file).map(gernerator::generateCover);
 			if (newCover.isPresent()) {

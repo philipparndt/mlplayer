@@ -24,7 +24,9 @@ public class Viewer {
 	private Optional<Image> cover = Optional.empty();
 	private Mode currentMode;
 	private int modeCount;
-
+	private int chapters;
+	private int chapter;
+	
 	public Viewer() throws IOException {
 		this.play = Images.load("play.png");
 		this.pause = Images.load("pause.png");
@@ -60,6 +62,14 @@ public class Viewer {
 		this.cover = cover;
 	}
 
+	public void setChapter(int chapter) {
+		this.chapter = chapter;
+	}
+	
+	public void setChapters(int chapters) {
+		this.chapters = chapters;
+	}
+	
 	public void update() {
 		final Graphics2D graphics = $().display.graphics;
 
@@ -96,7 +106,7 @@ public class Viewer {
 			}
 
 			if (this.currentMode != null) {
-				this.currentMode.paint(graphics, this.length, this.position);
+				this.currentMode.paint(graphics, this.length, this.position, this.chapters, this.chapter);
 			}
 		}
 

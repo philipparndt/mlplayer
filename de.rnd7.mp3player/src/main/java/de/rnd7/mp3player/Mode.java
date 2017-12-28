@@ -38,7 +38,7 @@ public class Mode {
 		return this.commandR;
 	}
 
-	public void paint(final Graphics2D graphics, final int length, final int position) {
+	public void paint(final Graphics2D graphics, final int length, final int position, int chapters, int chapter) {
 		graphics.drawImage(this.left, $().display.getB3(), 195, null);
 		graphics.drawImage(this.right, $().display.getB4(), 195, null);
 	}

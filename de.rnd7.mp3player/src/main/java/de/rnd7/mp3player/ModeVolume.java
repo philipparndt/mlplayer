@@ -16,10 +16,10 @@ public class ModeVolume extends Mode {
 	}
 
 	@Override
-	public void paint(final Graphics2D graphics, final int length, final int position) {
+	public void paint(final Graphics2D graphics, final int length, final int position, int chapters, int chapter) {
 		this.drawProgress(graphics);
 
-		super.paint(graphics, length, position);
+		super.paint(graphics, length, position, chapters, chapter);
 	}
 
 	private void drawProgress(final Graphics2D graphics) {

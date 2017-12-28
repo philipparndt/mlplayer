@@ -1,5 +1,7 @@
 package de.rnd7.mp3player;
 
+import static de.rnd7.mp3player.hw.HW.$;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -53,7 +55,7 @@ public final class Main {
 	private static FolderLibrary initLibrary(final Properties properties) throws IOException {
 		final ProgressMonitorDialog splash = new ProgressMonitorDialog();
 		final String propertyLibrary = properties.getProperty("library");
-		final FolderLibrary library = new FolderLibrary(new File(propertyLibrary));
+		final FolderLibrary library = new FolderLibrary(new File(propertyLibrary), $().display.getWidth(), $().display.getHeight());
 		library.init(splash);
 		splash.completed();
 		return library;

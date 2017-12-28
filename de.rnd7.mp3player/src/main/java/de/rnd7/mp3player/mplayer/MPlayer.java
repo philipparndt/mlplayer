@@ -146,4 +146,15 @@ public class MPlayer {
 		this.thread.ifPresent(t -> t.seek(position));
 	}
 
+	public int getChapter() {
+		return this.thread.map(MPlayerThread::getChapter).orElse(-1);
+	}
+	
+	public void setChapter(int chapter) {
+		this.thread.ifPresent(player -> player.setChapter(chapter));
+	}
+	
+	public int getChapters() {
+		return this.thread.map(MPlayerThread::getChapters).orElse(-1);
+	}
 }
