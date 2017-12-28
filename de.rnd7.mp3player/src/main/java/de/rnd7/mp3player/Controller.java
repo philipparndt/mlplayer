@@ -39,11 +39,10 @@ public class Controller {
 
 		this.registerButtons();
 
-		this.modes.addStopped(new Mode("navigate")
-				.setCommandL(Images.load("left.png"), this::prevoius)
-				.setCommandR(Images.load("right.png"), this::next));
-
 		this.modes
+		.addStopped(new Mode("navigate")
+				.setCommandL(Images.load("left.png"), this::prevoius)
+				.setCommandR(Images.load("right.png"), this::next))
 		.addPlaying(new ModeShowChapter()
 				.setCommandL(Images.load("left.png"), this::prevoiusChapter)
 				.setCommandR(Images.load("right.png"), this::nextChapter))
@@ -60,7 +59,6 @@ public class Controller {
 
 		this.modes.initStoppedMode();
 	}
-
 
 	private void registerButtons() {
 		$().buttons.button1.onPressed(this::button1);
@@ -194,7 +192,6 @@ public class Controller {
 		}
 	}
 
-
 	private void saveProgressNow() {
 		this.library.getCurrentItem().ifPresent(item -> {
 			final Duration length = this.player.getLength();
@@ -218,15 +215,16 @@ public class Controller {
 		if (playing) {
 			this.viewer.setPaused(this.player.isPaused());
 			this.viewer.setPosition(this.player.getPosition(), this.player.getLength());
-			this.viewer.setChapter(player.getChapter());
-			this.viewer.setChapters(player.getChapters());
+			this.viewer.setChapter(player.getChapters(), player.getChapter());
 		}
 		else if (currentItem.isPresent()) {
 			final LibraryItem item = currentItem.get();
 			this.viewer.setPosition(item.getCurrentPosition(), item.getLength());
+			this.viewer.setChapter(0, 0);
 		}
 		else {
 			this.viewer.setPosition(Duration.ZERO, Duration.ZERO);
+			this.viewer.setChapter(0, 0);
 		}
 
 		this.viewer.setMode(this.modes.getCurrentMode());

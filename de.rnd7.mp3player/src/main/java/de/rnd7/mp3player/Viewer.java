@@ -63,12 +63,9 @@ public class Viewer {
 		this.cover = cover;
 	}
 
-	public void setChapter(int chapter) {
-		this.chapter = chapter;
-	}
-	
-	public void setChapters(int chapters) {
+	public void setChapter(int chapters, int chapter) {
 		this.chapters = chapters;
+		this.chapter = chapter;
 	}
 	
 	public void update() {
