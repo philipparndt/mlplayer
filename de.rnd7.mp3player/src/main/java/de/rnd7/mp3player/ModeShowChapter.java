@@ -14,7 +14,7 @@ public class ModeShowChapter extends Mode {
 
 	@Override
 	public void paint(final Graphics2D graphics, final Duration length, final Duration position, int chapters, int chapter) {
-		if (!isPlaying(length, position)) {
+		if (!isPlaying(length, position) || chapters == 0 || chapter > chapters) {
 			return;
 		}
 

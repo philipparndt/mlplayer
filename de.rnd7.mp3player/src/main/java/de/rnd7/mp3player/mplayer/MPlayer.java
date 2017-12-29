@@ -2,6 +2,7 @@ package de.rnd7.mp3player.mplayer;
 
 import java.io.File;
 import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.ExecutionException;
@@ -19,7 +20,8 @@ import com.google.common.util.concurrent.TimeLimiter;
 public class MPlayer {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(MPlayer.class);
-
+	private LocalDateTime previousChapterTriggered = LocalDateTime.now();
+	
 	private final ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
 	private Optional<MPlayerThread> thread = Optional.empty();
 	private File playingFile;
@@ -174,9 +176,20 @@ public class MPlayer {
 
 	public void prevoiusChapter() {
 		int chapters = getChapters();
-		int chapter = Math.max(0, getChapter() - 1);
+		int chapter = Math.max(0, getChapter() - prevoiusChapterOffset());
 		if (chapters >= 0) {
 			setChapter(chapter);
 		}
+		
+		previousChapterTriggered = LocalDateTime.now();
+	}
+
+	private int prevoiusChapterOffset() {
+		return isTriggerCurrentChapter() ? 0 : 1;
+	}
+
+	private boolean isTriggerCurrentChapter() {
+		boolean triggerCurrent = previousChapterTriggered.plus(Duration.ofSeconds(2)).isBefore(LocalDateTime.now());
+		return triggerCurrent;
 	}
 }
