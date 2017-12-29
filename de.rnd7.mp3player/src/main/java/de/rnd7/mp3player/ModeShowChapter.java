@@ -19,13 +19,14 @@ public class ModeShowChapter extends Mode {
 		}
 
 		graphics.setColor(Color.WHITE);
-		graphics.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 24));
+		graphics.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 20));
 		final String duration = String.format("%d / %d", chapter + 1, chapters);
 
-		final int width = graphics.getFontMetrics().stringWidth(duration);
-		final int x = $().display.getWidth() - 10 - width;
+		int b3 = $().display.getB3();
+		
+		graphics.drawString(duration, b3 + 25, 221);
 
-		graphics.drawString(duration, x, 221);
+		super.paint(graphics, length, position, chapters, chapter);
 	}
 
 }

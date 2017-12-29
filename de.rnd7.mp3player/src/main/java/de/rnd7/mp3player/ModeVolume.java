@@ -36,10 +36,10 @@ public class ModeVolume extends Mode {
 		final Double len = (double) totalWidth / (double) total * current;
 
 		if (vol >= 90) {
-			graphics.setColor(new Color(255, 60, 0, 100));
+			graphics.setColor(new Color(255, 60, 0));
 		}
 		else {
-			graphics.setColor(new Color(255, 255, 255, 100));
+			graphics.setColor(new Color(255, 255, 255));
 		}
 		graphics.fillRect($().display.getWidth() - totalWidth - 5, 195, len.intValue(), 40);
 	}
