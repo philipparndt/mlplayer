@@ -24,7 +24,7 @@ public class ModeShowChapter extends Mode {
 
 		int b3 = $().display.getB3();
 		
-		graphics.drawString(duration, b3 + 25, 221);
+		graphics.drawString(duration, b3 + 30, 221);
 
 		super.paint(graphics, length, position, chapters, chapter);
 	}
