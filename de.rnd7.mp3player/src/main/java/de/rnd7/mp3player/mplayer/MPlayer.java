@@ -38,6 +38,8 @@ public class MPlayer {
 			old.stopPlay();
 			old.destroyPlayer();
 		});
+		
+		this.thread = Optional.empty();
 
 		final MPlayerThread playerThread = new MPlayerThread(this.command);
 		playerThread.start();
